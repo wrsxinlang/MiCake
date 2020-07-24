@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace MiCake.DDD.Extensions.LifeTime
+namespace MiCake.DDD.Extensions.Lifetime
 {
     /// <summary>
     /// Provide a life cycle interface of repository operation process
@@ -17,8 +17,7 @@ namespace MiCake.DDD.Extensions.LifeTime
         /// Operations before domain object persistence
         /// </summary>
         ValueTask<RepositoryEntityState> PreSaveChangesAsync(RepositoryEntityState entityState,
-                                                        object entity,
-                                                        CancellationToken cancellationToken = default);
-
+                                                             object entity,
+                                                             CancellationToken cancellationToken = default);
     }
 }

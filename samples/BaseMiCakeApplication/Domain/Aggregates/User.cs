@@ -1,11 +1,13 @@
-﻿using MiCake.AspNetCore.Identity;
+﻿using BaseMiCakeApplication.Utils;
+using MiCake.AspNetCore.Identity;
 using MiCake.Audit;
+using MiCake.DDD.Domain;
 using MiCake.Identity.Authentication;
 using System;
 
 namespace BaseMiCakeApplication.Domain.Aggregates
 {
-    public class User : MiCakeUser<Guid>, IHasCreationTime, IHasModificationTime
+    public class User : MiCakeUser<Guid>,IAggregateRoot<Guid>, IHasCreationTime, IHasModificationTime
     {
         [JwtClaim]
         public string Name { get; private set; }
@@ -22,6 +24,9 @@ namespace BaseMiCakeApplication.Domain.Aggregates
 
         public DateTime? ModificationTime { get; set; }
 
+        //用于生成jwtToken
+        [JwtClaim(ClaimName = GlobalArgs.ClaimUserId)]
+        private Guid UserId => Id;
         public User()
         {
         }

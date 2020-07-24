@@ -2,6 +2,7 @@
 using MiCake.DDD.Extensions.Internal;
 using MiCake.DDD.Tests.Fakes.Entities;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 using Xunit;
 
 namespace MiCake.DDD.Tests.ProxyRepository
@@ -48,12 +49,11 @@ namespace MiCake.DDD.Tests.ProxyRepository
             repository.UpdateAsync(entity4);
             Assert.Equal(2, repository.GetCountAsync().Result);
 
-            var list = repository.GetList();
-            var listAsync = repository.GetListAsync().Result;
-            Assert.Same(list, listAsync);
-            Assert.Equal(2, list.Count);
+            var list = repository.GetAll();
+            var listAsync = repository.GetAllAsync().Result;
+            Assert.Equal(2, list.Count());
 
-            Assert.Null(repository.FindMatch(s => s.Id == 0));
+            Assert.Equal(0, repository.FindMatch(s => s.Id == 0).Count());
         }
 
         [Fact]
@@ -68,9 +68,8 @@ namespace MiCake.DDD.Tests.ProxyRepository
             Assert.Null(repository.FindAsync(1).Result);
             Assert.Equal(0, repository.GetCount());
             Assert.Equal(0, repository.GetCountAsync().Result);
-            Assert.Empty(repository.GetList());
-            Assert.Empty(repository.GetListAsync().Result);
-            Assert.Null(repository.FindMatch());
+            Assert.Empty(repository.GetAll());
+            Assert.Empty(repository.GetAllAsync().Result);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace BaseMiCakeApplication
         public override void ConfigServices(ModuleConfigServiceContext context)
         {
             context.RegisterRepository<IItineraryRepository, ItineraryRepository>();
+            context.RegisterRepository<IUserRepository, UserRepository>();
         }
     }
 }

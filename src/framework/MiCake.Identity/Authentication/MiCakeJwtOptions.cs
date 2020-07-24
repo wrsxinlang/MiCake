@@ -27,14 +27,14 @@ namespace MiCake.Identity.Authentication
         /// <summary>
         /// The "iss" (issuer) claim identifies the principal that issued the JWT.
         /// </summary>
-        public string Issuer { get; set; } = "MiCake Application";
+        public string Issuer { get; set; } = "MiCake Client";
 
         /// <summary>
         /// The "aud" (audience) claim identifies the recipients that the JWT is intended for.
         /// 
         /// Default value is : "MiCake Client"
         /// </summary>
-        public string Audience { get; set; } = "MiCake Client";
+        public string Audience { get; set; } = "MiCake";
 
         /// <summary>
         /// The "exp" (expiration time) claim identifies the expiration time on or after which the JWT MUST NOT be accepted for processing.

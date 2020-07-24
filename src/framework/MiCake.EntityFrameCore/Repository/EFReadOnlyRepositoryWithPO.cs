@@ -1,12 +1,10 @@
-﻿using Mapster;
-using MiCake.Core.Util.Collections;
-using MiCake.DDD.Domain;
+﻿using MiCake.DDD.Domain;
 using MiCake.DDD.Domain.Store;
 using MiCake.DDD.Extensions.Store;
-using MiCake.EntityFrameworkCore.Uow;
+using MiCake.EntityFrameworkCore.Mapping;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,34 +16,34 @@ namespace MiCake.EntityFrameworkCore.Repository
     /// </summary>
     /// <typeparam name="TDbContext">Type Of DBContext</typeparam>
     /// <typeparam name="TAggregateRoot">Type of <see cref="IAggregateRoot"/></typeparam>
-    /// <typeparam name="TPersistentObject">Type of <see cref="PersistentObject{TEntity}"/></typeparam>
+    /// <typeparam name="TPersistentObject">Type of <see cref="PersistentObject{TKey,TEntity, TPersistentObject}"/></typeparam>
     /// <typeparam name="TKey">Primary key type of <see cref="IAggregateRoot"/></typeparam>
     public class EFReadOnlyRepositoryWithPO<TDbContext, TAggregateRoot, TPersistentObject, TKey> :
         EFRepositoryBase<TDbContext, TAggregateRoot, TKey>,
-        IReadOnlyRepository<TAggregateRoot, TKey>, IDisposable
+        IReadOnlyRepository<TAggregateRoot, TKey>,
+        IDisposable
         where TAggregateRoot : class, IAggregateRoot<TKey>, IHasPersistentObject
         where TPersistentObject : class, IPersistentObject
         where TDbContext : DbContext
     {
         protected new DbSet<TPersistentObject> DbSet => DbContext.Set<TPersistentObject>();
+        protected EFCorePoManager<TAggregateRoot, TPersistentObject> POManager { get; private set; }
 
-        //the relationship between entity instance and persistent object instancae.
-        private ConcurrentDictionary<object, object> _entityRelationship = new ConcurrentDictionary<object, object>();
-
-        public EFReadOnlyRepositoryWithPO(IDbContextProvider<TDbContext> dbContextProvider) : base(dbContextProvider)
+        public EFReadOnlyRepositoryWithPO(IServiceProvider serviceProvider) : base(serviceProvider)
         {
+
         }
 
         public TAggregateRoot Find(TKey ID)
         {
-            var snapshotModel = DbContext.Find<TPersistentObject>(ID);
-            return ToEntity(snapshotModel);
+            var POInstance = DbContext.Find<TPersistentObject>(ID);
+            return POManager.MapToDO(POInstance);
         }
 
         public virtual async Task<TAggregateRoot> FindAsync(TKey ID, CancellationToken cancellationToken = default)
         {
-            var snapshotModel = await DbContext.FindAsync<TPersistentObject>(new object[] { ID }, cancellationToken);
-            return ToEntity(snapshotModel);
+            var POInstance = await DbContext.FindAsync<TPersistentObject>(new object[] { ID }, cancellationToken);
+            return POManager.MapToDO(POInstance);
         }
 
         public virtual long GetCount()
@@ -53,83 +51,36 @@ namespace MiCake.EntityFrameworkCore.Repository
             return DbSet.CountAsync().Result;
         }
 
-        protected virtual TAggregateRoot ToEntity(TPersistentObject snapshot)
-        {
-            TAggregateRoot result;
-
-            var key = _entityRelationship.GetFirstKeyByValue(snapshot);
-            if (key != null)
-            {
-                result = snapshot.Adapt((TAggregateRoot)key);
-            }
-            else
-            {
-                result = snapshot.Adapt<TAggregateRoot>();
-                _entityRelationship.TryAdd(result, snapshot);
-            }
-
-            return result;
-        }
-
-        protected virtual List<TAggregateRoot> ToEntity(List<TPersistentObject> snapshot)
-        {
-            List<TAggregateRoot> result;
-
-            var key = _entityRelationship.GetFirstKeyByValue(snapshot);
-            if (key != null)
-            {
-                result = snapshot.Adapt((List<TAggregateRoot>)key);
-            }
-            else
-            {
-                result = snapshot.Adapt<List<TAggregateRoot>>();
-                _entityRelationship.TryAdd(result, snapshot);
-            }
-
-            return result;
-        }
-
-        protected virtual TPersistentObject ToPersistentObject(TAggregateRoot aggregateRoot)
-        {
-            TPersistentObject persistentObject;
-
-            if (_entityRelationship.TryGetValue(aggregateRoot, out var model))
-            {
-                TPersistentObject convertModel = (TPersistentObject)model;
-                persistentObject = aggregateRoot.Adapt(convertModel);
-            }
-            else
-            {
-                persistentObject = aggregateRoot.Adapt<TPersistentObject>();
-                _entityRelationship.TryAdd(aggregateRoot, persistentObject);
-            }
-
-            return persistentObject;
-        }
-
-        protected virtual List<TPersistentObject> ToPersistentObject(List<TAggregateRoot> aggregateRoot)
-        {
-            List<TPersistentObject> persistentObjects;
-
-            if (_entityRelationship.TryGetValue(aggregateRoot, out var model))
-            {
-                persistentObjects = aggregateRoot.Adapt((List<TPersistentObject>)model);
-            }
-            else
-            {
-                persistentObjects = aggregateRoot.Adapt<List<TPersistentObject>>();
-                _entityRelationship.TryAdd(aggregateRoot, persistentObjects);
-            }
-
-            return persistentObjects;
-        }
-
         public void Dispose()
         {
-            if (_entityRelationship.Count > 0)
-                _entityRelationship.Clear();
+            POManager.Dispose();
+            POManager = null;
+        }
 
-            _entityRelationship = null;
+        protected override void InitComponents()
+        {
+            base.InitComponents();
+            POManager = ServiceProvider.GetService<EFCorePoManager<TAggregateRoot, TPersistentObject>>();
+        }
+
+        protected virtual TPersistentObject MapToPO(TAggregateRoot aggregateRoot)
+        {
+            return POManager.MapToPO(aggregateRoot);
+        }
+
+        protected virtual IEnumerable<TPersistentObject> MapToPO(IEnumerable<TAggregateRoot> aggregateRoot)
+        {
+            return POManager.MapToPO(aggregateRoot);
+        }
+
+        protected virtual TAggregateRoot MapToDO(TPersistentObject aggregateRoot)
+        {
+            return POManager.MapToDO(aggregateRoot);
+        }
+
+        protected virtual IEnumerable<TAggregateRoot> MapToDO(IEnumerable<TPersistentObject> aggregateRoot)
+        {
+            return POManager.MapToDO(aggregateRoot);
         }
     }
 }
