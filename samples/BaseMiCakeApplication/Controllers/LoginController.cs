@@ -1,6 +1,8 @@
 ﻿using BaseMiCakeApplication.Domain.Aggregates;
 using BaseMiCakeApplication.Domain.Repositories;
 using BaseMiCakeApplication.Dto;
+using BaseMiCakeApplication.Dto.InputDto.Account;
+using BaseMiCakeApplication.Models;
 using Mapster;
 using MiCake.AspNetCore.Security;
 using MiCake.DDD.Domain;
@@ -20,7 +22,7 @@ namespace BaseMiCakeApplication.Controllers
     [OpenApiTag("Login 身份认证", Description = "登录/注册 以及获取相关信息")]
     [ApiController]
     [Route("[controller]/[action]")]
-    public class LoginController : ControllerBase
+    public class LoginController : OriginController
     {
         private readonly IJwtSupporter _jwtSupporter;
         private IHttpContextAccessor _httpContextAccessor;
@@ -53,24 +55,37 @@ namespace BaseMiCakeApplication.Controllers
             return new LoginResultDto() { AccessToken = token, HasUser = true, UserInfo = user.Adapt<UserDto>() };
         }
 
-        /// <summary>
-        /// 登录
-        /// </summary>
-        /// <param name="loginInfo"></param>
-        /// <returns></returns>
         [HttpPost]
-        public async Task<LoginResultDto> LoginAction(LoginDto loginInfo)
+        public async Task<ResultModel> GetToken(LoginUserInfo userDto)
         {
-            CheckCode(loginInfo.Code);
 
-            var user = await _userRepo.FindUserByPhone(loginInfo.Phone);
+            var user = await _userRepo.LoginAction(userDto);
 
-            if (user == null)
-                return LoginResultDto.NoUser();
+            if (user == null) return new ResultModel(-1, "账号不存在或密码错误");
 
             var token = _jwtSupporter.CreateToken(user);
-            return new LoginResultDto() { AccessToken = token, HasUser = true, UserInfo = user.Adapt<UserDto>() };
+
+            var userRes = new LoginResultDto() { AccessToken = token, HasUser = true, UserInfo = user.Adapt<UserDto>() };
+
+            return new ResultModel(0, "", userRes);
         }
+
+
+        /// <summary>
+        /// 获取某用户的信息
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<string> GetUserName(string name)
+        {
+            if (string.IsNullOrEmpty(name)) throw new Exception("用户名不能为空！");
+
+            var user = await _userRepo.FindUserByName(name);
+            if(user!=null) throw new Exception("用户名已存在！");
+            return "";
+        }
+
 
         /// <summary>
         /// 获取某用户的信息

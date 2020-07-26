@@ -44,13 +44,15 @@ namespace BaseMiCakeApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(options =>
-            {
-            });
+            services.AddControllers();
+
+            services.AddCors(options =>                                            //p.WithOrigins这里就是配置策略，允许访问的地址<br>　　　　　　　　
+                options.AddPolicy("AllowAny", p => p.WithOrigins("http://localhost:8080", "http://localhost:9528").AllowAnyMethod().AllowAnyHeader().AllowCredentials())
+            );
 
             services.AddDbContext<BaseAppDbContext>(options =>
             {
-                options.UseMySql("Server=localhost;Database=micakeexample;User=root;Password=WHsunjee_2018;", mySqlOptions => mySqlOptions
+                options.UseMySql("Server=localhost;Database=micakeexample;User=root;Password=a12345;", mySqlOptions => mySqlOptions
                     .ServerVersion(new ServerVersion(new Version(10, 5, 0), ServerType.MariaDb)));
             });
 
@@ -72,35 +74,38 @@ namespace BaseMiCakeApplication
                         };
                     });
 
+            #region 添加 IUserRepository到UserRepository的映射
             services.AddMiCakeWithDefault<BaseAppDbContext, BaseMiCakeModule>(
-                miCakeConfig: config =>
-                {
-                    config.Handlers.Add(new DemoExceptionHanlder());
-                },
-                miCakeAspNetConfig: options =>
-                {
-                    options.UseCustomModel();
-                    options.DataWrapperOptions.IsDebug = true;
-                })
-                .UseIdentity<User>()
-                .Build();
+                   miCakeConfig: config =>
+                   {
+                       config.Handlers.Add(new DemoExceptionHanlder());
+                   },
+                   miCakeAspNetConfig: options =>
+                   {
+                       options.UseCustomModel();
+                       options.DataWrapperOptions.IsDebug = true;
+                   })
+                   .UseIdentity<User>()
+                   .Build();
 
-            //Add Swagger
+            #endregion
+
+            #region AddMvc
             //配置Mvc + json 序列化
             //services.AddMvc(options => { options.EnableEndpointRouting = false; })
             //        .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-            //            .AddNewtonsoftJson(options =>
-            //            {
-            //                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            //                options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm";
-            //            });
+            //        .AddNewtonsoftJson(options =>
+            //        {
+            //            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            //            options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm";
+            //        }); 
+            #endregion
 
-
-
-
-
+            #region Add Swagger
+            //Add Swagger
             services.AddSwaggerDocument(document =>
             {
+                #region MyRegion
                 //document.PostProcess = document =>
                 //{
                 //    document.Info.Version = "v1";
@@ -118,7 +123,8 @@ namespace BaseMiCakeApplication
                 //        Name = "Use under LICX",
                 //        Url = "https://example.com/license"
                 //    };
-                //};
+                //}; 
+                #endregion
                 document.DocumentName = "MiCake Demo Application";
                 document.AddSecurity("JWT", new NSwag.OpenApiSecurityScheme()
                 {
@@ -130,6 +136,7 @@ namespace BaseMiCakeApplication
                 document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
             });
 
+            #endregion
 
             #region BugPatch
             //修复IJwtSupporter在反射MiCakeUser的时候 没有获取到私有属性的bug
@@ -140,15 +147,17 @@ namespace BaseMiCakeApplication
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+
             app.UseHttpsRedirection();
-
+            
             app.UseRouting();
-
+            app.UseCors("AllowAny");
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -156,20 +165,14 @@ namespace BaseMiCakeApplication
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                   name: "default",
+                   pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
             app.UseOpenApi();
 
             app.UseSwaggerUi3();
-            //app.UseMvc();
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //            name: "default",
-            //            template: "{controller=Home}/{action=Index}/{id?}");
-            //});
-
         }
     }
 }
