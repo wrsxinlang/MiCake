@@ -1,5 +1,5 @@
 ﻿using BaseMiCakeApplication.Domain.Aggregates;
-using BaseMiCakeApplication.Domain.Repositories;
+using BaseMiCakeApplication.Domain.Repositories.UserBoundary;
 using BaseMiCakeApplication.Dto;
 using BaseMiCakeApplication.Dto.InputDto.Account;
 using BaseMiCakeApplication.Models;
@@ -19,9 +19,9 @@ using MiCakeApp = BaseMiCakeApplication.Domain.Aggregates;
 
 namespace BaseMiCakeApplication.Controllers
 {
-    [OpenApiTag("Login 身份认证", Description = "登录/注册 以及获取相关信息")]
     [ApiController]
     [Route("[controller]/[action]")]
+    [OpenApiTag("Login 身份认证", Description = "登录/注册 以及获取相关信息")]
     public class LoginController : OriginController
     {
         private readonly IJwtSupporter _jwtSupporter;
@@ -39,11 +39,6 @@ namespace BaseMiCakeApplication.Controllers
             _userRepo = userRepository;
         }
 
-        /// <summary>
-        /// 注册用户
-        /// </summary>
-        /// <param name="registerInfo"></param>
-        /// <returns></returns>
         [HttpPost]
         public async Task<LoginResultDto> Register(RegisterUserDto registerInfo)
         {
@@ -61,37 +56,27 @@ namespace BaseMiCakeApplication.Controllers
 
             var user = await _userRepo.LoginAction(userDto);
 
-            if (user == null) return new ResultModel(-1, "账号不存在或密码错误");
+            if (user == null) return new ResultModel(-1,"账号不存在或密码错误");
 
             var token = _jwtSupporter.CreateToken(user);
 
             var userRes = new LoginResultDto() { AccessToken = token, HasUser = true, UserInfo = user.Adapt<UserDto>() };
-
-            return new ResultModel(0, "", userRes);
+            
+            return new ResultModel(0,"",userRes);
         }
 
-
-        /// <summary>
-        /// 获取某用户的信息
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         [HttpGet]
-        public async Task<string> GetUserName(string name)
+        public async Task<ResultModel> GetUserName(string name)
         {
-            if (string.IsNullOrEmpty(name)) throw new Exception("用户名不能为空！");
 
             var user = await _userRepo.FindUserByName(name);
-            if(user!=null) throw new Exception("用户名已存在！");
-            return "";
+
+            if (user != null) return new ResultModel(-1, "用户已存在", "");
+            return new ResultModel(0, "", "");
         }
 
+        
 
-        /// <summary>
-        /// 获取某用户的信息
-        /// </summary>
-        /// <param name="userID"></param>
-        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public List<string> GetInfo([CurrentUser] Guid userID)
@@ -105,20 +90,13 @@ namespace BaseMiCakeApplication.Controllers
 
         [HttpPost]
         [Authorize]
-        public List<string> GetInfoWithDto([CurrentUser][FromBody] GetUserInfoDto userID)
+        public List<string> GetInfoWithDto([CurrentUser] [FromBody] GetUserInfoDto userID)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             var userInfo = httpContext?.User;
 
             var result = userInfo?.Claims.Select(s => s.Value).ToList();
             return result;
-        }
-
-
-        private void CheckCode(string code)
-        {
-            if (!code.ToLower().Equals("micake"))
-                throw new DomainException($"验证码不正确");
         }
     }
 
@@ -129,5 +107,4 @@ namespace BaseMiCakeApplication.Controllers
 
         public string UserName { get; set; }
     }
-
 }

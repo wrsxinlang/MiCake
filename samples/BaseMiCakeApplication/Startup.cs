@@ -1,10 +1,8 @@
-using AutoMapper;
 using BaseMiCakeApplication.Domain.Aggregates;
 using BaseMiCakeApplication.EFCore;
 using BaseMiCakeApplication.Handlers;
 using BaseMiCakeApplication.MiCakeFeatures;
 using BaseMiCakeApplication.Utils;
-using IdentityModel;
 using MiCake;
 using MiCake.AspNetCore.Modules;
 using MiCake.AspNetCore.Security;
@@ -13,7 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,9 +22,6 @@ using NSwag.Generation.Processors.Security;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
 using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 
@@ -46,9 +41,7 @@ namespace BaseMiCakeApplication
         {
             services.AddControllers();
 
-            services.AddCors(options =>                                            //p.WithOrigins这里就是配置策略，允许访问的地址<br>　　　　　　　　
-                options.AddPolicy("AllowAny", p => p.WithOrigins("http://localhost:8080", "http://localhost:9528").AllowAnyMethod().AllowAnyHeader().AllowCredentials())
-            );
+            services.AddCors(options => options.AddPolicy("AllowAny", p => p.WithOrigins("http://localhost:8080", "http://localhost:9528").AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
 
             services.AddDbContext<BaseAppDbContext>(options =>
             {
@@ -74,57 +67,22 @@ namespace BaseMiCakeApplication
                         };
                     });
 
-            #region 添加 IUserRepository到UserRepository的映射
             services.AddMiCakeWithDefault<BaseAppDbContext, BaseMiCakeModule>(
-                   miCakeConfig: config =>
-                   {
-                       config.Handlers.Add(new DemoExceptionHanlder());
-                   },
-                   miCakeAspNetConfig: options =>
-                   {
-                       options.UseCustomModel();
-                       options.DataWrapperOptions.IsDebug = true;
-                   })
-                   .UseIdentity<User>()
-                   .Build();
+                miCakeConfig: config =>
+                {
+                    config.Handlers.Add(new DemoExceptionHanlder());
+                },
+                miCakeAspNetConfig: options =>
+                {
+                    options.UseCustomModel();
+                    options.DataWrapperOptions.IsDebug = true;
+                })
+                .UseIdentity<User>()
+                .Build();
 
-            #endregion
-
-            #region AddMvc
-            //配置Mvc + json 序列化
-            //services.AddMvc(options => { options.EnableEndpointRouting = false; })
-            //        .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-            //        .AddNewtonsoftJson(options =>
-            //        {
-            //            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            //            options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm";
-            //        }); 
-            #endregion
-
-            #region Add Swagger
             //Add Swagger
             services.AddSwaggerDocument(document =>
             {
-                #region MyRegion
-                //document.PostProcess = document =>
-                //{
-                //    document.Info.Version = "v1";
-                //    document.Info.Title = "UserManageApp API";
-                //    document.Info.Description = "A simple ASP.NET Core web API";
-                //    document.Info.TermsOfService = "None";
-                //    document.Info.Contact = new NSwag.OpenApiContact
-                //    {
-                //        Name = "wrs",
-                //        Email = "335826963@qq.com",
-                //        Url = "https://example.com"
-                //    };
-                //    document.Info.License = new NSwag.OpenApiLicense
-                //    {
-                //        Name = "Use under LICX",
-                //        Url = "https://example.com/license"
-                //    };
-                //}; 
-                #endregion
                 document.DocumentName = "MiCake Demo Application";
                 document.AddSecurity("JWT", new NSwag.OpenApiSecurityScheme()
                 {
@@ -136,8 +94,6 @@ namespace BaseMiCakeApplication
                 document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
             });
 
-            #endregion
-
             #region BugPatch
             //修复IJwtSupporter在反射MiCakeUser的时候 没有获取到私有属性的bug
             services.Replace(new ServiceDescriptor(typeof(IJwtSupporter), typeof(JwtSupporter), ServiceLifetime.Singleton));
@@ -147,15 +103,13 @@ namespace BaseMiCakeApplication
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-
             app.UseHttpsRedirection();
-            
+
             app.UseRouting();
             app.UseCors("AllowAny");
             app.UseAuthentication();
@@ -166,12 +120,12 @@ namespace BaseMiCakeApplication
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                   name: "default",
-                   pattern: "{controller=Home}/{action=Index}/{id?}");
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                    );
             });
 
             app.UseOpenApi();
-
             app.UseSwaggerUi3();
         }
     }

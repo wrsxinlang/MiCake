@@ -22,8 +22,8 @@ namespace BaseMiCakeApplication.MiCakeFeatures
             CustomWrapperModel result = new CustomWrapperModel("MiCakeCustomModel");
 
             result.AddProperty("company", s => "MiCake");
-            result.AddProperty("status", s => (s.ResultData as ObjectResult).StatusCode ?? s.HttpContext.Response.StatusCode);
-            result.AddProperty("data", s => (s.ResultData as ObjectResult).Value);
+            result.AddProperty("statusCode", s => (s.ResultData as ObjectResult).StatusCode ?? s.HttpContext.Response.StatusCode);
+            result.AddProperty("result", s => (s.ResultData as ObjectResult).Value);
 
             return result;
         }

@@ -1,5 +1,7 @@
 ﻿using BaseMiCakeApplication.Domain.Repositories;
+using BaseMiCakeApplication.Domain.Repositories.UserBoundary;
 using BaseMiCakeApplication.EFCore.Repositories;
+using BaseMiCakeApplication.EFCore.Repositories.UserData;
 using MiCake;
 using MiCake.Core.Modularity;
 
