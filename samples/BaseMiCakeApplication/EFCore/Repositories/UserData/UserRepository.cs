@@ -1,12 +1,10 @@
-﻿using BaseMiCakeApplication.Domain.Aggregates;
+﻿using BaseMiCakeApplication.Domain.Aggregates.Account;
 using BaseMiCakeApplication.Domain.Repositories.UserBoundary;
 using BaseMiCakeApplication.Dto.InputDto.Account;
-using BaseMiCakeApplication.Models;
 using Mapster;
 using MiCake.EntityFrameworkCore.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BaseMiCakeApplication.EFCore.Repositories.UserData

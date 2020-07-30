@@ -1,6 +1,5 @@
-﻿using BaseMiCakeApplication.Domain.Aggregates;
+﻿using BaseMiCakeApplication.Domain.Aggregates.Account;
 using BaseMiCakeApplication.Dto.InputDto.Account;
-using BaseMiCakeApplication.Models;
 using MiCake.DDD.Domain;
 using System;
 using System.Threading.Tasks;

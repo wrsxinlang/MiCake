@@ -5,7 +5,7 @@ using MiCake.DDD.Domain;
 using MiCake.Identity.Authentication;
 using System;
 
-namespace BaseMiCakeApplication.Domain.Aggregates
+namespace BaseMiCakeApplication.Domain.Aggregates.Account
 {
     public class User : MiCakeUser<Guid>, IAggregateRoot<Guid>, IHasCreationTime, IHasModificationTime
     {
@@ -34,10 +34,15 @@ namespace BaseMiCakeApplication.Domain.Aggregates
         {
         }
 
+
+        internal User(string name, string pwd)
+        {
+            Id = Guid.NewGuid();
+            Name = name;
+            Password = pwd;
+        }
         internal User(string name, string phone, string pwd, int age)
         {
-            //some check rule...
-
             Id = Guid.NewGuid();
             Password = pwd;
             Phone = phone;
@@ -55,9 +60,12 @@ namespace BaseMiCakeApplication.Domain.Aggregates
 
         public void ChangePhone(string phone)
         {
-            //some check rule...
-
             Phone = phone;
+        }
+
+        public static User Create(string name, string pwd)
+        {
+            return new User(name, pwd);
         }
 
         public static User Create(string phone,

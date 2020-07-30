@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Domain\Events\新文件夹1\**" />
+    <Content Remove="Domain\Events\新文件夹1\**" />
+    <EmbeddedResource Remove="Domain\Events\新文件夹1\**" />
+    <None Remove="Domain\Events\新文件夹1\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Domain\Repositories\UserBoundary\IUserWithWechatRepository.cs" />
   </ItemGroup>
 

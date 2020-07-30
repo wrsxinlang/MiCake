@@ -1,6 +1,6 @@
 ﻿namespace BaseMiCakeApplication.Dto
 {
-    public class RegisterUserDto
+    public class LoginUserInfo
     {
         public string Phone { get; set; }
 

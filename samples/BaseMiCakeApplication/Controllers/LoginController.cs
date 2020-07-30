@@ -15,7 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MiCakeApp = BaseMiCakeApplication.Domain.Aggregates;
+using MiCakeApp = BaseMiCakeApplication.Domain.Aggregates.Account;
 
 namespace BaseMiCakeApplication.Controllers
 {
@@ -40,18 +40,20 @@ namespace BaseMiCakeApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<LoginResultDto> Register(RegisterUserDto registerInfo)
+        public async Task<ResultModel> Register(Dto.InputDto.Account.LoginUserInfo userDto)
         {
-            var user = MiCakeApp.User.Create(registerInfo.Phone, registerInfo.Password, registerInfo.Name, registerInfo.Age);
+            var user = MiCakeApp.User.Create(userDto.Act, userDto.Pwd);
             await _userRepo.AddAsync(user);
 
             var token = _jwtSupporter.CreateToken(user);
 
-            return new LoginResultDto() { AccessToken = token, HasUser = true, UserInfo = user.Adapt<UserDto>() };
+            var userRes = new LoginResultDto() { AccessToken = token, HasUser = true, UserInfo = user.Adapt<UserDto>() };
+
+            return new ResultModel(0, "", userRes);
         }
 
         [HttpPost]
-        public async Task<ResultModel> GetToken(LoginUserInfo userDto)
+        public async Task<ResultModel> GetToken(Dto.InputDto.Account.LoginUserInfo userDto)
         {
 
             var user = await _userRepo.LoginAction(userDto);

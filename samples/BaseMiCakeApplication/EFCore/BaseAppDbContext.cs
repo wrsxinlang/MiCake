@@ -1,4 +1,5 @@
 ﻿using BaseMiCakeApplication.Domain.Aggregates;
+using BaseMiCakeApplication.Domain.Aggregates.Account;
 using BaseMiCakeApplication.Infrastructure.StroageModels;
 using MiCake.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

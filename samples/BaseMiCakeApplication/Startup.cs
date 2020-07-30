@@ -1,4 +1,4 @@
-using BaseMiCakeApplication.Domain.Aggregates;
+using BaseMiCakeApplication.Domain.Aggregates.Account;
 using BaseMiCakeApplication.EFCore;
 using BaseMiCakeApplication.Handlers;
 using BaseMiCakeApplication.MiCakeFeatures;
@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing.Template;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -92,6 +92,11 @@ namespace BaseMiCakeApplication
                     Type = NSwag.OpenApiSecuritySchemeType.ApiKey
                 });
                 document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+            });
+
+            services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 268435456;//long.MaxValue;
             });
 
             #region BugPatch
