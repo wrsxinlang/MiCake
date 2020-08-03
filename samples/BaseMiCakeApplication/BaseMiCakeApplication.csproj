@@ -34,4 +34,8 @@
     <ProjectReference Include="..\..\src\framework\MiCake.AspNetCore.Start\MiCake.AspNetCore.Start.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

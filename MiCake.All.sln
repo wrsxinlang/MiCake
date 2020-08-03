@@ -68,8 +68,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiCake.MessageBus.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiCake.MessageBus.RabbitMQ", "src\framework\MiCake.MessageBus.RabbitMQ\MiCake.MessageBus.RabbitMQ.csproj", "{EE8DAB25-FC6C-4091-9312-AE5D782171D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiCake.Bus", "src\framework\MiCake.Bus\MiCake.Bus.csproj", "{C999EF97-7789-45A8-958C-8BBBB7A279FA}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -211,7 +209,6 @@ Global
 		{FD291D0E-B372-4A29-8DA4-10AE581E3E20} = {DD51C453-21A0-4639-9163-4EBF895F4546}
 		{CD97C20E-6EB8-4E6C-B3D5-9BBFED59AD47} = {8E61693E-3165-470C-99F4-E0A9BAB8BCC3}
 		{EE8DAB25-FC6C-4091-9312-AE5D782171D8} = {DD51C453-21A0-4639-9163-4EBF895F4546}
-		{C999EF97-7789-45A8-958C-8BBBB7A279FA} = {DD51C453-21A0-4639-9163-4EBF895F4546}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C31E5600-E4DC-4009-A5F6-E5250C8085F4}

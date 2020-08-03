@@ -27,5 +27,10 @@ namespace BaseMiCakeApplication.Domain.Aggregates
 
 
         public FileEnum FileType { get; set; }
+
+        /// <summary>
+        /// 文件名
+        /// </summary>
+        public string Name { get; set; }
     }
 }

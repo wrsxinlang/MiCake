@@ -16,6 +16,10 @@ namespace BaseMiCakeApplication.EFCore
         public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
+        public virtual DbSet<FileObject> Sys_File { get; set; }
+
+        public virtual DbSet<UserWithWechat> Sys_UserWechat { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
         }

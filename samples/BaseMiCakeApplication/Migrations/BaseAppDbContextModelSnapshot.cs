@@ -17,21 +17,7 @@ namespace BaseMiCakeApplication.Migrations
                 .HasAnnotation("ProductVersion", "3.1.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("BaseMiCakeApplication.Domain.Aggregates.Book", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("BookName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("BaseMiCakeApplication.Domain.Aggregates.User", b =>
+            modelBuilder.Entity("BaseMiCakeApplication.Domain.Aggregates.Account.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,6 +50,63 @@ namespace BaseMiCakeApplication.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("BaseMiCakeApplication.Domain.Aggregates.Account.UserWithWechat", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("UserID")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("WeChatOpenID")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sys_UserWechat");
+                });
+
+            modelBuilder.Entity("BaseMiCakeApplication.Domain.Aggregates.Book", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("BookName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("BaseMiCakeApplication.Domain.Aggregates.FileObject", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("FileExtention")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<long>("FileLength")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("FileType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sys_File");
                 });
 
             modelBuilder.Entity("BaseMiCakeApplication.Infrastructure.StroageModels.ItinerarySnapshotModel", b =>
