@@ -1,19 +1,13 @@
-﻿using MiCake.DDD.Domain;
+﻿using BaseMiCakeApplication.Domain.Events.IdeaEvents;
+using MiCake.Audit;
+using MiCake.DDD.Domain;
 using MiCake.DDD.Domain.Store;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BaseMiCakeApplication.Domain.Aggregates.Idea
 {
-    public class NewIdea : AggregateRootHasPersistentObject<Guid>
+    public class NewIdea : AggregateRootHasPersistentObject<Guid>, IHasCreationTime, IHasModificationTime
     {
-        public NewIdea()
-        {
-            
-        }
-
         /// <summary>
         /// 简介
         /// </summary>
@@ -58,12 +52,34 @@ namespace BaseMiCakeApplication.Domain.Aggregates.Idea
         /// 审核时间
         /// </summary>
         public DateTime? CheckedTime { get; set; }
+        public DateTime? ModificationTime { get; set; }
+        public DateTime CreationTime { get; set; }
 
+        public Guid CreateUserID { get; set; }
 
+        public NewIdea()
+        {
+
+        }
+
+        public NewIdea(string title, string introduce, string graphic,Guid userID)
+        {
+            Id = Guid.NewGuid();
+            Title = title;
+            Introduce = introduce;
+            Graphic = graphic;
+            CreateUserID = userID;
+            CreationTime = DateTime.Now;
+        }
+
+        public void RegisterCommand(Guid id)
+        {
+            AddDomainEvent(new AddIdenEvent(id));
+        }
 
     }
 
-    public class Checker: ValueObject
+    public class Checker : ValueObject
     {
         public Guid CheckerID { get; set; }
         public string CheckerName { get; set; }

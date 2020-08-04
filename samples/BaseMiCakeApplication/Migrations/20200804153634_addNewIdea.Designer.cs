@@ -3,14 +3,16 @@ using System;
 using BaseMiCakeApplication.EFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BaseMiCakeApplication.Migrations
 {
     [DbContext(typeof(BaseAppDbContext))]
-    partial class BaseAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200804153634_addNewIdea")]
+    partial class addNewIdea
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

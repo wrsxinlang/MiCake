@@ -22,17 +22,12 @@ namespace BaseMiCakeApplication.Controllers
     [ApiController]
     [Route("[controller]/[action]")]
     [OpenApiTag("Login 身份认证", Description = "登录/注册 以及获取相关信息")]
-    public class LoginController : OriginController
+    public class LoginController : ControllerBase
     {
         private readonly IJwtSupporter _jwtSupporter;
         private IHttpContextAccessor _httpContextAccessor;
         private readonly IUserRepository _userRepo;
-
-
-        public LoginController(
-            IJwtSupporter jwtSupporter,
-            IHttpContextAccessor httpContextAccessor,
-            IUserRepository userRepository)
+        public LoginController(IJwtSupporter jwtSupporter, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
         {
             _jwtSupporter = jwtSupporter;
             _httpContextAccessor = httpContextAccessor;
@@ -58,13 +53,13 @@ namespace BaseMiCakeApplication.Controllers
 
             var user = await _userRepo.LoginAction(userDto);
 
-            if (user == null) return new ResultModel(-1,"账号不存在或密码错误");
+            if (user == null) return new ResultModel(-1, "账号不存在或密码错误");
 
             var token = _jwtSupporter.CreateToken(user);
 
             var userRes = new LoginResultDto() { AccessToken = token, HasUser = true, UserInfo = user.Adapt<UserDto>() };
-            
-            return new ResultModel(0,"",userRes);
+
+            return new ResultModel(0, "", userRes);
         }
 
         [HttpGet]
@@ -76,8 +71,6 @@ namespace BaseMiCakeApplication.Controllers
             if (user != null) return new ResultModel(-1, "用户已存在", "");
             return new ResultModel(0, "", "");
         }
-
-        
 
         [HttpGet]
         [Authorize]

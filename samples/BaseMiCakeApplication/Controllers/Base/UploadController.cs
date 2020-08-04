@@ -31,7 +31,12 @@ namespace BaseMiCakeApplication.Controllers.Base
             _uploadFileReposity = uploadFileReposity;
         }
 
-        [HttpPost]
+        /// <summary>
+        /// 上传文件
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [HttpPost, RequestSizeLimit(2000_000_000)]
         public ResultModel SaveFile(IFormFile file)
         {
             var fileSize = file.Length;
@@ -45,26 +50,27 @@ namespace BaseMiCakeApplication.Controllers.Base
                     FileLength = fileSize
                 };
                 var dNow = DateTime.Now;
-                fileEntity.Url = Path.Combine("Upload", dNow.ToString("yyyy"), dNow.ToString("MM"), dNow.ToString("dd"));
-                var path = Path.Combine(env.ContentRootPath, fileEntity.Url);
+                fileEntity.Url = Path.Combine(dNow.ToString("yyyy"), dNow.ToString("MM"), dNow.ToString("dd"));
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileEntity.Url);//Path.Combine(env.ContentRootPath, fileEntity.Url);
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
-                fileEntity.Url = "\\" + fileEntity.Url;
-                var savePath = Path.Combine(path, fileEntity.Id + fileEntity.FileExtention);
+                fileEntity.Url = "\\Upload\\" + fileEntity.Url;
+                var savePath = Path.Combine(path, fileEntity.Id + fileEntity.FileExtention);//Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileEntity.Id + fileEntity.FileExtention);//
+
                 using (var fs = new FileStream(savePath, FileMode.Create))
                 {
                     file.CopyTo(fs);
                 }
-                _uploadFileReposity.AddAndReturn(fileEntity);
-
-                var resFile = new
+                this._uploadFileReposity.AddAndReturn(fileEntity);
+                var fileResult = new
                 {
                     Id = fileEntity.Id,
-                    Path = Path.Combine(fileEntity.Url, fileEntity.Id.ToString() + fileEntity.FileExtention)
+                    path = Path.Combine(fileEntity.Url, fileEntity.Id + fileEntity.FileExtention)
                 };
-                return new ResultModel(0, resFile);
+                return new ResultModel(0, "", fileResult);
             }
-            return new ResultModel(-1, "文件读取失败", null);
+            return new ResultModel(-1, 0, "导入错误");
         }
 
         /// <summary>
@@ -78,7 +84,7 @@ namespace BaseMiCakeApplication.Controllers.Base
             var image = this.LoadingPhoto("\\Images\\6\\", imgName);
             if (image == null)
             {
-                
+
             }
 
             return image;
