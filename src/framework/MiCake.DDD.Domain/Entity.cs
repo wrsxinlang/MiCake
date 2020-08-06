@@ -20,6 +20,8 @@ namespace MiCake.DDD.Domain
         public virtual void AddDomainEvent(IDomainEvent domainEvent)
           => _domainEvents.Add(domainEvent);
 
+        public virtual void UpdateDomainEvent(IDomainEvent domainEvent)
+         => _domainEvents.Add(domainEvent);
         public virtual void RemoveDomainEvent(IDomainEvent domainEvent)
           => _domainEvents.Remove(domainEvent);
 

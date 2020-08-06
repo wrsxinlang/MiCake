@@ -37,6 +37,7 @@ namespace BaseMiCakeApplication.Controllers.Base
         /// <param name="file"></param>
         /// <returns></returns>
         [HttpPost, RequestSizeLimit(2000_000_000)]
+        [Authorize]
         public ResultModel SaveFile(IFormFile file)
         {
             var fileSize = file.Length;

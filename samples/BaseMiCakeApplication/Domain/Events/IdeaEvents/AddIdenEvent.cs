@@ -8,11 +8,21 @@ namespace BaseMiCakeApplication.Domain.Events.IdeaEvents
 {
     public class AddIdenEvent : DomainEvent
     {
-        public Guid ItineraryID { get; set; }
+        public Guid NewIdeaID { get; set; }
 
         public AddIdenEvent(Guid Id)
         {
-            ItineraryID = Id;
+            NewIdeaID = Id;
+        }
+    }
+
+    public class UpdateIdenEvent : DomainEvent
+    {
+        public Guid NewIdeaID { get; set; }
+
+        public UpdateIdenEvent(Guid Id)
+        {
+            NewIdeaID = Id;
         }
     }
 }

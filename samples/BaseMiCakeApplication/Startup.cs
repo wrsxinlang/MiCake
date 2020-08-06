@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NSwag.Generation.Processors.Security;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
@@ -26,6 +27,14 @@ using System;
 using System.IO;
 using System.Security.Claims;
 using System.Text;
+
+using Senparc.CO2NET;
+using Senparc.CO2NET.RegisterServices;
+using Senparc.Weixin;
+using Senparc.Weixin.Entities;
+using Senparc.Weixin.RegisterServices;
+using Senparc.Weixin.Work;
+using BaseMiCakeApplication.WeChat;
 
 namespace BaseMiCakeApplication
 {
@@ -50,7 +59,8 @@ namespace BaseMiCakeApplication
                 options.UseMySql("Server=localhost;Database=micakeexample;User=root;Password=a12345;", mySqlOptions => mySqlOptions
                     .ServerVersion(new ServerVersion(new Version(10, 5, 0), ServerType.MariaDb)));
             });
-
+            //企业微信
+            services.AddWork(Configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             VerifyUserClaims.UserID = GlobalArgs.ClaimUserId;
@@ -105,9 +115,16 @@ namespace BaseMiCakeApplication
             //修复IJwtSupporter在反射MiCakeUser的时候 没有获取到私有属性的bug
             services.Replace(new ServiceDescriptor(typeof(IJwtSupporter), typeof(JwtSupporter), ServiceLifetime.Singleton));
             #endregion
+
+            services.AddMemoryCache();//使用本地缓存必须添加
+
+            //services.AddSignalR();//使用 SignalR   -- DPBMARK WebSocket DPBMARK_END
+            //services.AddSenparcWeixinServices(Configuration);//Senparc.Weixin 注册 
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        //public void Configure(IApplicationBuilder app, IWebHostEnvironment env,IOptions<SenparcSetting> senparcSetting, IOptions<SenparcWeixinSetting> senparcWeixinSetting)
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
@@ -127,7 +144,8 @@ namespace BaseMiCakeApplication
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            //初始化企业微信
+            app.UserWork(env);
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -147,6 +165,34 @@ namespace BaseMiCakeApplication
 
             app.UseOpenApi();
             app.UseSwaggerUi3();
+
+            ////使用 SignalR（.NET Core 3.0）                                                      -- DPBMARK WebSocket
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    //配置自定义 SenparcHub
+            //    endpoints.MapHub<SenparcHub>("/SenparcHub");
+            //});                                                                                  // DPBMARK_END
+            //app.UseSenparcGlobal(env, senparcSetting.Value, globalRegister => { })
+            //   .UseSenparcWeixin(senparcWeixinSetting.Value, weixinRegister =>
+            //    {
+            //       weixinRegister.RegisterWorkAccount(senparcWeixinSetting.Value, "【网络小助手】公众号");
+            //    });
+
+            // 启动 CO2NET 全局注册，必须！ 
+            //IRegisterService register = RegisterService.Start(senparcSetting.Value).UseSenparcGlobal(false, null);
+
+            ////开始注册微信信息，必须！ 
+            //register.UseSenparcWeixin(senparcWeixinSetting.Value, senparcSetting.Value)
+            //#region 注册企业号（按需） 
+
+            //    //注册企业号 
+            //    .RegisterWorkAccount(
+            //        senparcWeixinSetting.Value.WeixinCorpId,
+            //        senparcWeixinSetting.Value.WeixinCorpSecret,
+            //        "【盛派网络】企业微信");
+            ////还可注册任意多个企业号 
+
+            //#endregion
         }
     }
 }

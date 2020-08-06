@@ -16,4 +16,12 @@ namespace BaseMiCakeApplication.Domain.EventHandlers.IdeaHandlers
             throw new NotImplementedException();
         }
     }
+
+    public class UpdateIdeaHandler : IDomainEventHandler<UpdateIdenEvent>
+    {
+        public Task HandleAysnc(UpdateIdenEvent domainEvent, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

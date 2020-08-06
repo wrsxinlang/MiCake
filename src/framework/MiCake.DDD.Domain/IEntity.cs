@@ -5,7 +5,7 @@ namespace MiCake.DDD.Domain
     public interface IEntity : IDomainEventProvider
     {
         void AddDomainEvent(IDomainEvent domainEvent);
-
+        void UpdateDomainEvent(IDomainEvent domainEvent);
         void RemoveDomainEvent(IDomainEvent domainEvent);
     }
 

@@ -77,6 +77,11 @@ namespace BaseMiCakeApplication.Domain.Aggregates.Idea
             AddDomainEvent(new AddIdenEvent(id));
         }
 
+        public void UpdateCommand(Guid id)
+        {
+            UpdateDomainEvent(new UpdateIdenEvent(id));
+        }
+
     }
 
     public class Checker : ValueObject

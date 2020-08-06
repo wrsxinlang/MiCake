@@ -3,6 +3,7 @@ using BaseMiCakeApplication.Domain.Repositories.UserBoundary;
 using BaseMiCakeApplication.Dto;
 using BaseMiCakeApplication.Dto.InputDto.Account;
 using BaseMiCakeApplication.Models;
+using BaseMiCakeApplication.WeChat;
 using Mapster;
 using MiCake.AspNetCore.Security;
 using MiCake.DDD.Domain;
@@ -27,11 +28,13 @@ namespace BaseMiCakeApplication.Controllers
         private readonly IJwtSupporter _jwtSupporter;
         private IHttpContextAccessor _httpContextAccessor;
         private readonly IUserRepository _userRepo;
-        public LoginController(IJwtSupporter jwtSupporter, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
+        private readonly IWorkApi _workApi;
+        public LoginController(IJwtSupporter jwtSupporter, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository, IWorkApi workApi)
         {
             _jwtSupporter = jwtSupporter;
             _httpContextAccessor = httpContextAccessor;
             _userRepo = userRepository;
+            _workApi = workApi;
         }
 
         [HttpPost]
@@ -58,7 +61,7 @@ namespace BaseMiCakeApplication.Controllers
             var token = _jwtSupporter.CreateToken(user);
 
             var userRes = new LoginResultDto() { AccessToken = token, HasUser = true, UserInfo = user.Adapt<UserDto>() };
-
+            _workApi.SendTextMsg("梦露创意工作室【测试消息】 \n  据说收到群主测试消息会有好运", "wangrenshuang");
             return new ResultModel(0, "", userRes);
         }
 

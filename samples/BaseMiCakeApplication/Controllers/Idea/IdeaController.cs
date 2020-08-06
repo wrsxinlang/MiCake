@@ -1,6 +1,7 @@
 ﻿using BaseMiCakeApplication.Domain.Aggregates.Idea;
 using BaseMiCakeApplication.Models;
 using MiCake.AspNetCore.Security;
+using MiCake.DDD.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,20 +21,38 @@ namespace BaseMiCakeApplication.Controllers.Idea
     public class IdeaController : ControllerBase
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public IdeaController(IHttpContextAccessor httpContextAccessor)
+        private readonly IRepository<NewIdea, Guid> _ideaRepositry;
+        public IdeaController(IHttpContextAccessor httpContextAccessor, IRepository<NewIdea, Guid> ideaRepositry)
         {
             _httpContextAccessor = httpContextAccessor;
+            _ideaRepositry = ideaRepositry;
         }
 
+        /// <summary>
+        /// 保存或编辑 创意
+        /// </summary>
+        /// <param name="form"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         public ResultModel AddOrCreateIdea(AddIdeaDto form)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             string userid = httpContext?.User.Claims.Where(s => s.Type == "userid").FirstOrDefault()?.Value;
-            var newIdea = new NewIdea(form.Title, form.Introduce, JsonConvert.SerializeObject(form.ContentList), new Guid(userid));
-            newIdea.RegisterCommand(newIdea.Id);
+            NewIdea newIdea = null;
+            if (form.Id.HasValue)
+            {
+                newIdea = _ideaRepositry.Find(form.Id.Value);
+                newIdea.UpdateCommand(newIdea.Id);
+                _ideaRepositry.Update(newIdea);
+            }
+            else 
+            {
+                newIdea = new NewIdea(form.Title, form.Introduce, JsonConvert.SerializeObject(form.ContentList), new Guid(userid));
+                newIdea.RegisterCommand(newIdea.Id);
+                _ideaRepositry.Add(newIdea);
+            }
+            
             return new ResultModel(0,newIdea);
         }
     }
@@ -44,7 +63,7 @@ namespace BaseMiCakeApplication.Controllers.Idea
         {
             ContentList = new List<IdeaItem>();
         }
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         [Required(ErrorMessage = "The Title is Required")]
         [MinLength(1)]
@@ -59,8 +78,7 @@ namespace BaseMiCakeApplication.Controllers.Idea
         [DisplayName("Introduce")]
         public string Introduce { get; set; }
 
-        [Required(ErrorMessage = "The ContentList is Required")]
-        [DisplayName("ContentList")]
+     
         public List<IdeaItem> ContentList { get; set; }
     }
 
