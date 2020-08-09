@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaseMiCakeApplication.Migrations
 {
     [DbContext(typeof(BaseAppDbContext))]
-    [Migration("20200803141843_uploadfile")]
-    partial class uploadfile
+    [Migration("20200809074301_InitalModel")]
+    partial class InitalModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,9 +49,12 @@ namespace BaseMiCakeApplication.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<int>("Reputation")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Sys_User");
                 });
 
             modelBuilder.Entity("BaseMiCakeApplication.Domain.Aggregates.Account.UserWithWechat", b =>
@@ -111,6 +114,100 @@ namespace BaseMiCakeApplication.Migrations
                     b.ToTable("Sys_File");
                 });
 
+            modelBuilder.Entity("BaseMiCakeApplication.Domain.Aggregates.Idea.Checker", b =>
+                {
+                    b.Property<Guid>("CheckerID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ChecherAct")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("CheckerName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("CheckerID");
+
+                    b.ToTable("Checker");
+                });
+
+            modelBuilder.Entity("BaseMiCakeApplication.Infrastructure.StorageModels.NewIdeaSnapshotModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ChecherAct")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<Guid>("CheckerID")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CheckerName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("CommentCount")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("CoverImgId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("CreateUserID")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Graphic")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Introduce")
+                        .HasColumnType("varchar(250) CHARACTER SET utf8mb4")
+                        .HasMaxLength(250);
+
+                    b.Property<bool>("IsChecked")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsOtherEdit")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("ModificationTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("PublishCount")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("RelationId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("ViewCount")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("WorksID")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CheckerID");
+
+                    b.HasIndex("CoverImgId");
+
+                    b.ToTable("Mlcy_NewIdeas");
+                });
+
             modelBuilder.Entity("BaseMiCakeApplication.Infrastructure.StroageModels.ItinerarySnapshotModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -160,6 +257,19 @@ namespace BaseMiCakeApplication.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("BookId");
                         });
+                });
+
+            modelBuilder.Entity("BaseMiCakeApplication.Infrastructure.StorageModels.NewIdeaSnapshotModel", b =>
+                {
+                    b.HasOne("BaseMiCakeApplication.Domain.Aggregates.Idea.Checker", "Checker")
+                        .WithMany()
+                        .HasForeignKey("CheckerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BaseMiCakeApplication.Domain.Aggregates.FileObject", "CoverImg")
+                        .WithMany()
+                        .HasForeignKey("CoverImgId");
                 });
 #pragma warning restore 612, 618
         }

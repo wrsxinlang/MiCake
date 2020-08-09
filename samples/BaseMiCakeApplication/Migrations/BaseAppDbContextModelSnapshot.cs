@@ -47,9 +47,12 @@ namespace BaseMiCakeApplication.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<int>("Reputation")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Sys_User");
                 });
 
             modelBuilder.Entity("BaseMiCakeApplication.Domain.Aggregates.Account.UserWithWechat", b =>
@@ -115,6 +118,9 @@ namespace BaseMiCakeApplication.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("ChecherAct")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("CheckerName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -123,17 +129,23 @@ namespace BaseMiCakeApplication.Migrations
                     b.ToTable("Checker");
                 });
 
-            modelBuilder.Entity("BaseMiCakeApplication.Domain.Aggregates.Idea.NewIdea", b =>
+            modelBuilder.Entity("BaseMiCakeApplication.Infrastructure.StorageModels.NewIdeaSnapshotModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime?>("CheckedTime")
-                        .HasColumnType("datetime(6)");
+                    b.Property<string>("ChecherAct")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<Guid?>("CheckerID")
+                    b.Property<Guid>("CheckerID")
                         .HasColumnType("char(36)");
+
+                    b.Property<string>("CheckerName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("CommentCount")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("CoverImgId")
                         .HasColumnType("char(36)");
@@ -144,11 +156,21 @@ namespace BaseMiCakeApplication.Migrations
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Graphic")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Introduce")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(250) CHARACTER SET utf8mb4")
+                        .HasMaxLength(250);
+
+                    b.Property<bool>("IsChecked")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsOtherEdit")
                         .HasColumnType("tinyint(1)");
@@ -156,11 +178,21 @@ namespace BaseMiCakeApplication.Migrations
                     b.Property<DateTime?>("ModificationTime")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("PublishCount")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("RelationId")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Remark")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("ViewCount")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("WorksID")
                         .HasColumnType("char(36)");
@@ -171,7 +203,7 @@ namespace BaseMiCakeApplication.Migrations
 
                     b.HasIndex("CoverImgId");
 
-                    b.ToTable("NewIdeas");
+                    b.ToTable("Mlcy_NewIdeas");
                 });
 
             modelBuilder.Entity("BaseMiCakeApplication.Infrastructure.StroageModels.ItinerarySnapshotModel", b =>
@@ -225,11 +257,13 @@ namespace BaseMiCakeApplication.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BaseMiCakeApplication.Domain.Aggregates.Idea.NewIdea", b =>
+            modelBuilder.Entity("BaseMiCakeApplication.Infrastructure.StorageModels.NewIdeaSnapshotModel", b =>
                 {
                     b.HasOne("BaseMiCakeApplication.Domain.Aggregates.Idea.Checker", "Checker")
                         .WithMany()
-                        .HasForeignKey("CheckerID");
+                        .HasForeignKey("CheckerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BaseMiCakeApplication.Domain.Aggregates.FileObject", "CoverImg")
                         .WithMany()

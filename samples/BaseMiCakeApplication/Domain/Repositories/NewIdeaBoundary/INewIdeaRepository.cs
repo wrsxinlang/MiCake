@@ -9,6 +9,6 @@ namespace BaseMiCakeApplication.Domain.Repositories.NewIdeaBoundary
 {
     public interface INewIdeaRepository : IRepository<NewIdea, Guid>
     {
-
+        List<NewIdea> GetList(string searchKey,int page,int limit,string orderType, out int total);
     }
 }

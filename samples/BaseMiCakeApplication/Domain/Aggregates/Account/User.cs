@@ -22,6 +22,11 @@ namespace BaseMiCakeApplication.Domain.Aggregates.Account
 
         public string Password { get; private set; }
 
+        /// <summary>
+        /// 信誉值
+        /// </summary>
+        public int Reputation { get; set; }
+
         public DateTime CreationTime { get; set; }
 
         public DateTime? ModificationTime { get; set; }

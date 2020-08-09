@@ -330,3 +330,4 @@ ASALocalRun/
 .mfractor/
 /BaseMiCakeApplication/Migrations
 /src/framework/MiCake.Bus.RabbitMQ/MiCake.MessageBus.RabbitMQ.csproj
+/samples/BaseMiCakeApplication/wwwroot/images/2020/08/07

@@ -49,6 +49,21 @@ namespace BaseMiCakeApplication.Domain.Aggregates.Idea
         public Checker Checker { get; set; }
 
         /// <summary>
+        /// 评论量
+        /// </summary>
+        public int CommentCount { get; set; }
+
+        /// <summary>
+        /// 浏览量
+        /// </summary>
+        public int ViewCount { get; set; }
+
+        /// <summary>
+        /// 收藏量
+        /// </summary>
+        public int PublishCount { get; set; }
+
+        /// <summary>
         /// 审核时间
         /// </summary>
         public DateTime? CheckedTime { get; set; }
@@ -57,12 +72,16 @@ namespace BaseMiCakeApplication.Domain.Aggregates.Idea
 
         public Guid CreateUserID { get; set; }
 
+        public string Remark { get; set; }
+
+        public bool IsChecked { get; set; }
+
         public NewIdea()
         {
 
         }
 
-        public NewIdea(string title, string introduce, string graphic,Guid userID)
+        public NewIdea(string title, string introduce, string graphic,Guid userID,string remark)
         {
             Id = Guid.NewGuid();
             Title = title;
@@ -70,6 +89,7 @@ namespace BaseMiCakeApplication.Domain.Aggregates.Idea
             Graphic = graphic;
             CreateUserID = userID;
             CreationTime = DateTime.Now;
+            Remark = remark;
         }
 
         public void RegisterCommand(Guid id)
@@ -88,5 +108,6 @@ namespace BaseMiCakeApplication.Domain.Aggregates.Idea
     {
         public Guid CheckerID { get; set; }
         public string CheckerName { get; set; }
+        public string ChecherAct { get; set; }
     }
 }

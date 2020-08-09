@@ -15,6 +15,14 @@
 
   <ItemGroup>
     <Compile Remove="Domain\Repositories\UserBoundary\IUserWithWechatRepository.cs" />
+    <Compile Remove="Migrations\20200803141843_uploadfile.cs" />
+    <Compile Remove="Migrations\20200803141843_uploadfile.Designer.cs" />
+    <Compile Remove="Migrations\20200804153634_addNewIdea.cs" />
+    <Compile Remove="Migrations\20200804153634_addNewIdea.Designer.cs" />
+    <Compile Remove="Migrations\20200808143007_Mlcy_NewIdeas.cs" />
+    <Compile Remove="Migrations\20200808143007_Mlcy_NewIdeas.Designer.cs" />
+    <Compile Remove="Migrations\20200809054650_updateNewIdea.cs" />
+    <Compile Remove="Migrations\20200809054650_updateNewIdea.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
