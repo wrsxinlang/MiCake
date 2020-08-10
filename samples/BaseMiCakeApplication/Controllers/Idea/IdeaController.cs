@@ -112,12 +112,13 @@ namespace BaseMiCakeApplication.Controllers.Idea
         {
             var newIdea =  _ideaRepositry.Find(id);
             if(newIdea==null) return new ResultModel(0, "数据不存在",null);
-            AddIdeaDto model = new AddIdeaDto {
+            var model = new {
                 Id = newIdea.Id,
                 Title = newIdea.Title,
                 Introduce = newIdea.Introduce,
                 ContentList = JsonConvert.DeserializeObject<List<IdeaItem>>(newIdea.Graphic),
-                Remark = newIdea.Remark
+                Remark = newIdea.Remark,
+                useroid = newIdea.CreateUserID
             };
             return new ResultModel(0,model);
         }
@@ -131,17 +132,17 @@ namespace BaseMiCakeApplication.Controllers.Idea
         }
         public Guid? Id { get; set; }
 
-        [Required(ErrorMessage = "The Title is Required")]
-        [MinLength(1)]
-        [MaxLength(50)]
-        [DisplayName("Title")]
+        //[Required(ErrorMessage = "The Title is Required")]
+        //[MinLength(1)]
+        //[MaxLength(50)]
+        //[DisplayName("Title")]
         public string Title { get; set; }
 
 
-        [Required(ErrorMessage = "The Introduce is Required")]
-        [MinLength(2)]
-        [MaxLength(50)]
-        [DisplayName("Introduce")]
+        //[Required(ErrorMessage = "The Introduce is Required")]
+        //[MinLength(2)]
+        //[MaxLength(50)]
+        //[DisplayName("Introduce")]
         public string Introduce { get; set; }
 
         public string Remark { get; set; }

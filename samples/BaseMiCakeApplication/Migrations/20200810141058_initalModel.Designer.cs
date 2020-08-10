@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaseMiCakeApplication.Migrations
 {
     [DbContext(typeof(BaseAppDbContext))]
-    [Migration("20200809074301_InitalModel")]
-    partial class InitalModel
+    [Migration("20200810141058_initalModel")]
+    partial class initalModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -138,6 +138,9 @@ namespace BaseMiCakeApplication.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("ChecherAct")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("CheckedMsg")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid>("CheckerID")

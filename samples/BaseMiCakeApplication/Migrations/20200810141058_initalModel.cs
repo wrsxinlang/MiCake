@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BaseMiCakeApplication.Migrations
 {
-    public partial class InitalModel : Migration
+    public partial class initalModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -126,7 +126,8 @@ namespace BaseMiCakeApplication.Migrations
                     CheckerID = table.Column<Guid>(nullable: false),
                     CheckerName = table.Column<string>(nullable: true),
                     ChecherAct = table.Column<string>(nullable: true),
-                    IsChecked = table.Column<bool>(nullable: false)
+                    IsChecked = table.Column<bool>(nullable: false),
+                    CheckedMsg = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

@@ -76,6 +76,11 @@ namespace BaseMiCakeApplication.Domain.Aggregates.Idea
 
         public bool IsChecked { get; set; }
 
+        /// <summary>
+        /// 审核意见
+        /// </summary>
+        public string CheckedMsg { get; set; }
+
         public NewIdea()
         {
 

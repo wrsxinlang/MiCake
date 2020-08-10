@@ -10,7 +10,7 @@ namespace BaseMiCakeApplication.Domain.Repositories.UserBoundary
     {
         public Task<User> FindUserByPhone(string phone);
 
-        public Task<User> FindUserByName(string name);
+        public User FindUserByName(string name);
 
         public Task AddUserAsync(User user);
 

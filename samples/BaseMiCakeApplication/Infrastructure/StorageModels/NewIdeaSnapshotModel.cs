@@ -79,25 +79,31 @@ namespace BaseMiCakeApplication.Infrastructure.StorageModels
         public bool IsDeleted { get; set; }
         public DateTime? DeletionTime { get; set; }
 
-        public Guid CheckerID { get; set; }
-        public string CheckerName { get; set; }
-        public string ChecherAct { get; set; }
+        //public Guid CheckerID { get; set; }
+        //public string CheckerName { get; set; }
+        //public string ChecherAct { get; set; }
 
         public bool IsChecked { get; set; }
 
+        /// <summary>
+        /// 审核意见
+        /// </summary>
+        public string CheckedMsg { get; set; }
+
         public override void ConfigureMapping()
         {
-            MapConfiger.MapProperty(d => d.Checker.CheckerName, s => s.CheckerName)
-                       .MapProperty(d => d.Checker.CheckerID, s => s.CheckerID)
-                       .MapProperty(d => d.Checker.ChecherAct, s => s.ChecherAct)
-                       .MapProperty(d => d.Id, s => s.Id)
-                       .MapProperty(d => d.Title, s => s.Title)
-                       .MapProperty(d => d.CommentCount, s => s.CommentCount)
-                       .MapProperty(d => d.ViewCount, s => s.ViewCount)
-                       .MapProperty(d => d.PublishCount, s => s.PublishCount)
-                       .MapProperty(d => d.CreateUserID, s => s.CreateUserID)
-                       .MapProperty(d => d.Remark, s => s.Remark)
-                       .MapProperty(d => d.IsChecked, s => s.IsChecked);
+            MapConfiger.MapProperty(d => d.Id, s => s.Id);
+                       //.MapProperty(d => d.Title, s => s.Title)
+                       //.MapProperty(d => d.CommentCount, s => s.CommentCount)
+                       //.MapProperty(d => d.ViewCount, s => s.ViewCount)
+                       //.MapProperty(d => d.PublishCount, s => s.PublishCount)
+                       //.MapProperty(d => d.CreateUserID, s => s.CreateUserID)
+                       //.MapProperty(d => d.Remark, s => s.Remark)
+                       //.MapProperty(d => d.IsChecked, s => s.IsChecked)
+                       //.MapProperty(d => d.CheckedMsg, s => s.CheckedMsg)
+                       //.MapProperty(d => d.Checker.CheckerName, s => s.CheckerName)
+                       //.MapProperty(d => d.Checker.CheckerID, s => s.CheckerID)
+                       //.MapProperty(d => d.Checker.ChecherAct, s => s.ChecherAct);
         }
     }
 }

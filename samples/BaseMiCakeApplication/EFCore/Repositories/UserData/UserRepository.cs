@@ -23,9 +23,10 @@ namespace BaseMiCakeApplication.EFCore.Repositories.UserData
             return persistentObject.Adapt<User>();
         }
 
-        public async Task<User> FindUserByName(string name)
+        public User FindUserByName(string name)
         {
-            var persistentObject = await DbSet.FirstOrDefaultAsync(s => s.Name.Equals(name));
+            var persistentObject =  DbSet.FirstOrDefaultAsync(s => s.Name.Equals(name));
+            if(persistentObject.Result ==null) return null;
             return persistentObject.Adapt<User>();
         }
 

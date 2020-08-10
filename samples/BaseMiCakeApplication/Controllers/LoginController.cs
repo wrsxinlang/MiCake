@@ -55,7 +55,7 @@ namespace BaseMiCakeApplication.Controllers
 
             var user = await _userRepo.LoginAction(userDto);
 
-            if (user == null) return new ResultModel(-1, "账号不存在或密码错误");
+            if (user == null) return new ResultModel(-1, "账号不存在或密码错误",null);
 
             var token = _jwtSupporter.CreateToken(user);
 
@@ -65,12 +65,12 @@ namespace BaseMiCakeApplication.Controllers
         }
 
         [HttpGet]
-        public async Task<ResultModel> GetUserName(string name)
+        public ResultModel GetUserName(string name)
         {
 
-            var user = await _userRepo.FindUserByName(name);
+            var user =  _userRepo.FindUserByName(name);
 
-            if (user != null) return new ResultModel(-1, "用户已存在", "");
+            if (user != null) return new ResultModel(-1, "用户已存在", null);
             return new ResultModel(0, "", "");
         }
 
