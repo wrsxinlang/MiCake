@@ -17,19 +17,19 @@ namespace BaseMiCakeApplication.EFCore.Repositories.NewIdeaBoundry
         {
 
         }
-        public List<NewIdea> GetList(string searchKey, int page, int limit, string orderType,out int total)
+        public List<NewIdea> GetList(string searchKey, int page, int limit, string orderType, out int total)
         {
             var persistentObjects = DbSet.Where(s => !s.IsDeleted);
-            if (!string.IsNullOrEmpty(searchKey)) persistentObjects = persistentObjects.Where(x=>x.Title.Contains(searchKey));
+            if (!string.IsNullOrEmpty(searchKey)) persistentObjects = persistentObjects.Where(x => x.Title.Contains(searchKey));
             switch (orderType)
             {
-                
+
                 default:
-                    persistentObjects.OrderByDescending(x=>x.CreationTime);
+                    persistentObjects.OrderByDescending(x => x.CreationTime);
                     break;
             }
             total = persistentObjects.Count();
-            if (page>0&&limit>0)
+            if (page > 0 && limit > 0)
             {
                 persistentObjects = persistentObjects.Skip((page - 1) * limit).Take(limit);
             }

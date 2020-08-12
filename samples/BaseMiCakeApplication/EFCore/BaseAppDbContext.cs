@@ -16,13 +16,30 @@ namespace BaseMiCakeApplication.EFCore
 
         public virtual DbSet<ItinerarySnapshotModel> Itinerary { get; set; }
         public virtual DbSet<Book> Books { get; set; }
+
+        /// <summary>
+        /// 用户表
+        /// </summary>
         public virtual DbSet<User> Sys_User { get; set; }
 
+        /// <summary>
+        /// 上传文件表
+        /// </summary>
         public virtual DbSet<FileObject> Sys_File { get; set; }
 
-
+        /// <summary>
+        /// 创意表
+        /// </summary>
         public virtual DbSet<NewIdeaSnapshotModel> Mlcy_NewIdeas { get; set; }
 
+        /// <summary>
+        /// 评论表
+        /// </summary>
+        public virtual DbSet<CommentDatasSnapshotModel> Mlcy_Comments { get; set; }
+
+        /// <summary>
+        /// 微信登录表
+        /// </summary>
         public virtual DbSet<UserWithWechat> Sys_UserWechat { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

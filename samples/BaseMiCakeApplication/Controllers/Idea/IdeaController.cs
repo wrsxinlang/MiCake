@@ -1,6 +1,8 @@
-﻿using BaseMiCakeApplication.Domain.Aggregates.Account;
+﻿using BaseMiCakeApplication.Controllers.Comman;
+using BaseMiCakeApplication.Domain.Aggregates.Account;
 using BaseMiCakeApplication.Domain.Aggregates.Idea;
 using BaseMiCakeApplication.Domain.Repositories.NewIdeaBoundary;
+using BaseMiCakeApplication.Dto.InputDto.Comments;
 using BaseMiCakeApplication.Models;
 using MiCake.AspNetCore.Security;
 using MiCake.DDD.Domain;
@@ -27,14 +29,18 @@ namespace BaseMiCakeApplication.Controllers.Idea
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRepository<NewIdea, Guid> _ideaRepositry;
         private readonly IRepository<User, Guid> _userRepositry;
+        private readonly IRepository<CommentDatas, Guid> _commentsRepositry;
         private readonly INewIdeaRepository _newIdeaRepository;
-        public IdeaController(IHttpContextAccessor httpContextAccessor, IRepository<NewIdea, Guid> ideaRepositry, INewIdeaRepository newIdeaRepository, IRepository<User, Guid> userRepositry)
+        public IdeaController(IHttpContextAccessor httpContextAccessor, IRepository<NewIdea, Guid> ideaRepositry, INewIdeaRepository newIdeaRepository,
+            IRepository<User, Guid> userRepositry, IRepository<CommentDatas, Guid> commentsRepositry)
         {
             _httpContextAccessor = httpContextAccessor;
             _ideaRepositry = ideaRepositry;
             _newIdeaRepository = newIdeaRepository;
             _userRepositry = userRepositry;
+            _commentsRepositry = commentsRepositry;
         }
+        #region 创意的增删改
 
         /// <summary>
         /// 保存或编辑 创意
@@ -110,9 +116,10 @@ namespace BaseMiCakeApplication.Controllers.Idea
         [HttpGet]
         public ResultModel GetIdeaDetail(Guid id)
         {
-            var newIdea =  _ideaRepositry.Find(id);
-            if(newIdea==null) return new ResultModel(0, "数据不存在",null);
-            var model = new {
+            var newIdea = _ideaRepositry.Find(id);
+            if (newIdea == null) return new ResultModel(0, "数据不存在", null);
+            var model = new
+            {
                 Id = newIdea.Id,
                 Title = newIdea.Title,
                 Introduce = newIdea.Introduce,
@@ -120,7 +127,23 @@ namespace BaseMiCakeApplication.Controllers.Idea
                 Remark = newIdea.Remark,
                 useroid = newIdea.CreateUserID
             };
-            return new ResultModel(0,model);
+            return new ResultModel(0, model);
+        }
+
+        #endregion
+        /// <summary>
+        /// 发表评论
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        public ResultModel CreateComment(CommentInputDto model)
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            string userid = httpContext?.User.Claims.Where(s => s.Type == "userid").FirstOrDefault()?.Value;
+            CommentDatas comment = new CommentDatas(model.RelationObjectID, (int)CY_Classify.创意回复,new Guid(userid), model.ReplyContent,model.ReplyToUserObjectID,model.ParentID);
+            return new ResultModel(0, comment);
         }
     }
 

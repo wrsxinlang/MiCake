@@ -13,4 +13,9 @@ namespace BaseMiCakeApplication.Controllers.Comman
         视频 = 4
         
     }
+
+    public enum CY_Classify
+    {
+        创意回复 = 1
+    }
 }
