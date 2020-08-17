@@ -53,6 +53,27 @@ namespace BaseMiCakeApplication.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Mlcy_Comments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    RelationObjectID = table.Column<Guid>(nullable: false),
+                    ReplayType = table.Column<int>(nullable: false),
+                    CreateUserObjectID = table.Column<Guid>(nullable: false),
+                    ReplyContent = table.Column<string>(nullable: true),
+                    ReplyToUserObjectID = table.Column<Guid>(nullable: true),
+                    ParentID = table.Column<Guid>(nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    ModificationTime = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletionTime = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mlcy_Comments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Sys_File",
                 columns: table => new
                 {
@@ -76,6 +97,7 @@ namespace BaseMiCakeApplication.Migrations
                     Name = table.Column<string>(nullable: true),
                     Avatar = table.Column<string>(nullable: true),
                     Age = table.Column<int>(nullable: false),
+                    Gender = table.Column<int>(nullable: false),
                     Phone = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
@@ -119,13 +141,11 @@ namespace BaseMiCakeApplication.Migrations
                     IsOtherEdit = table.Column<bool>(nullable: false),
                     CreateUserID = table.Column<Guid>(nullable: false),
                     Remark = table.Column<string>(nullable: true),
+                    CheckerID = table.Column<Guid>(nullable: true),
                     CreationTime = table.Column<DateTime>(nullable: false),
                     ModificationTime = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     DeletionTime = table.Column<DateTime>(nullable: true),
-                    CheckerID = table.Column<Guid>(nullable: false),
-                    CheckerName = table.Column<string>(nullable: true),
-                    ChecherAct = table.Column<string>(nullable: true),
                     IsChecked = table.Column<bool>(nullable: false),
                     CheckedMsg = table.Column<string>(nullable: true)
                 },
@@ -137,7 +157,7 @@ namespace BaseMiCakeApplication.Migrations
                         column: x => x.CheckerID,
                         principalTable: "Checker",
                         principalColumn: "CheckerID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Mlcy_NewIdeas_Sys_File_CoverImgId",
                         column: x => x.CoverImgId,
@@ -164,6 +184,9 @@ namespace BaseMiCakeApplication.Migrations
 
             migrationBuilder.DropTable(
                 name: "Itinerary");
+
+            migrationBuilder.DropTable(
+                name: "Mlcy_Comments");
 
             migrationBuilder.DropTable(
                 name: "Mlcy_NewIdeas");

@@ -1,4 +1,6 @@
-﻿namespace BaseMiCakeApplication.Dto
+﻿using BaseMiCakeApplication.Dto.InputDto.Account;
+
+namespace BaseMiCakeApplication.Dto
 {
     public class LoginResultDto
     {

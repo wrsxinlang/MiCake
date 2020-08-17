@@ -23,6 +23,8 @@
     <Compile Remove="Migrations\20200808143007_Mlcy_NewIdeas.Designer.cs" />
     <Compile Remove="Migrations\20200809054650_updateNewIdea.cs" />
     <Compile Remove="Migrations\20200809054650_updateNewIdea.Designer.cs" />
+    <Compile Remove="Migrations\20200810141058_initalModel.cs" />
+    <Compile Remove="Migrations\20200810141058_initalModel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,7 +50,82 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\" />
+    <None Include="wwwroot\images\avatar\f1.webp" />
+    <None Include="wwwroot\images\avatar\f10.webp" />
+    <None Include="wwwroot\images\avatar\f100.webp" />
+    <None Include="wwwroot\images\avatar\f11.webp" />
+    <None Include="wwwroot\images\avatar\f13.webp" />
+    <None Include="wwwroot\images\avatar\f14.webp" />
+    <None Include="wwwroot\images\avatar\f15.webp" />
+    <None Include="wwwroot\images\avatar\f16.webp" />
+    <None Include="wwwroot\images\avatar\f17.webp" />
+    <None Include="wwwroot\images\avatar\f18.webp" />
+    <None Include="wwwroot\images\avatar\f19.webp" />
+    <None Include="wwwroot\images\avatar\f2.webp" />
+    <None Include="wwwroot\images\avatar\f20.webp" />
+    <None Include="wwwroot\images\avatar\f21.webp" />
+    <None Include="wwwroot\images\avatar\f22.webp" />
+    <None Include="wwwroot\images\avatar\f23.webp" />
+    <None Include="wwwroot\images\avatar\f24.webp" />
+    <None Include="wwwroot\images\avatar\f25.webp" />
+    <None Include="wwwroot\images\avatar\f26.webp" />
+    <None Include="wwwroot\images\avatar\f27.webp" />
+    <None Include="wwwroot\images\avatar\f28.webp" />
+    <None Include="wwwroot\images\avatar\f29.webp" />
+    <None Include="wwwroot\images\avatar\f3.webp" />
+    <None Include="wwwroot\images\avatar\f30.webp" />
+    <None Include="wwwroot\images\avatar\f31.webp" />
+    <None Include="wwwroot\images\avatar\f32.webp" />
+    <None Include="wwwroot\images\avatar\f4.webp" />
+    <None Include="wwwroot\images\avatar\f5.webp" />
+    <None Include="wwwroot\images\avatar\f6.webp" />
+    <None Include="wwwroot\images\avatar\f7.webp" />
+    <None Include="wwwroot\images\avatar\f8.webp" />
+    <None Include="wwwroot\images\avatar\f9.webp" />
+    <None Include="wwwroot\images\avatar\f90.webp" />
+    <None Include="wwwroot\images\avatar\f91.webp" />
+    <None Include="wwwroot\images\avatar\f98.webp" />
+    <None Include="wwwroot\images\avatar\f99.webp" />
+    <None Include="wwwroot\images\avatar\m1.webp" />
+    <None Include="wwwroot\images\avatar\m10.webp" />
+    <None Include="wwwroot\images\avatar\m100.webp" />
+    <None Include="wwwroot\images\avatar\m11.webp" />
+    <None Include="wwwroot\images\avatar\m12.webp" />
+    <None Include="wwwroot\images\avatar\m13.webp" />
+    <None Include="wwwroot\images\avatar\m14.webp" />
+    <None Include="wwwroot\images\avatar\m15.webp" />
+    <None Include="wwwroot\images\avatar\m16.webp" />
+    <None Include="wwwroot\images\avatar\m17.webp" />
+    <None Include="wwwroot\images\avatar\m18.webp" />
+    <None Include="wwwroot\images\avatar\m19.webp" />
+    <None Include="wwwroot\images\avatar\m2.webp" />
+    <None Include="wwwroot\images\avatar\m20.webp" />
+    <None Include="wwwroot\images\avatar\m21.webp" />
+    <None Include="wwwroot\images\avatar\m22.webp" />
+    <None Include="wwwroot\images\avatar\m23.webp" />
+    <None Include="wwwroot\images\avatar\m24.webp" />
+    <None Include="wwwroot\images\avatar\m25.webp" />
+    <None Include="wwwroot\images\avatar\m26.webp" />
+    <None Include="wwwroot\images\avatar\m27.webp" />
+    <None Include="wwwroot\images\avatar\m28.webp" />
+    <None Include="wwwroot\images\avatar\m29.webp" />
+    <None Include="wwwroot\images\avatar\m3.webp" />
+    <None Include="wwwroot\images\avatar\m30.webp" />
+    <None Include="wwwroot\images\avatar\m31.webp" />
+    <None Include="wwwroot\images\avatar\m32.webp" />
+    <None Include="wwwroot\images\avatar\m33.webp" />
+    <None Include="wwwroot\images\avatar\m34.webp" />
+    <None Include="wwwroot\images\avatar\m35.webp" />
+    <None Include="wwwroot\images\avatar\m36.webp" />
+    <None Include="wwwroot\images\avatar\m37.webp" />
+    <None Include="wwwroot\images\avatar\m38.webp" />
+    <None Include="wwwroot\images\avatar\m39.webp" />
+    <None Include="wwwroot\images\avatar\m4.webp" />
+    <None Include="wwwroot\images\avatar\m5.webp" />
+    <None Include="wwwroot\images\avatar\m6.webp" />
+    <None Include="wwwroot\images\avatar\m7.webp" />
+    <None Include="wwwroot\images\avatar\m8.webp" />
+    <None Include="wwwroot\images\avatar\m9.webp" />
   </ItemGroup>
 
 </Project>

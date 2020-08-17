@@ -1,4 +1,5 @@
-﻿using BaseMiCakeApplication.Utils;
+﻿using BaseMiCakeApplication.Controllers.Comman;
+using BaseMiCakeApplication.Utils;
 using MiCake.AspNetCore.Identity;
 using MiCake.Audit;
 using MiCake.DDD.Domain;
@@ -15,6 +16,8 @@ namespace BaseMiCakeApplication.Domain.Aggregates.Account
         public string Avatar { get; private set; }
 
         public int Age { get; private set; }
+
+        public Gender Gender { get; set; }
 
         public string Phone { get; private set; }
 
@@ -40,20 +43,22 @@ namespace BaseMiCakeApplication.Domain.Aggregates.Account
         }
 
 
-        internal User(string name, string pwd)
+        internal User(string name, string pwd,string avatar, Gender gender)
         {
             Id = Guid.NewGuid();
             Name = name;
             Password = pwd;
+            Avatar = avatar;
+            Gender = gender;
         }
-        internal User(string name, string phone, string pwd, int age)
-        {
-            Id = Guid.NewGuid();
-            Password = pwd;
-            Phone = phone;
-            Name = name;
-            Age = age;
-        }
+        //internal User(string name, string phone, string pwd, int age)
+        //{
+        //    Id = Guid.NewGuid();
+        //    Password = pwd;
+        //    Phone = phone;
+        //    Name = name;
+        //    Age = age;
+        //}
 
         public void SetAvatar(string avatar) => Avatar = avatar;
 
@@ -68,17 +73,9 @@ namespace BaseMiCakeApplication.Domain.Aggregates.Account
             Phone = phone;
         }
 
-        public static User Create(string name, string pwd)
+        public static User Create(string name, string pwd, string avatar, Gender gender)
         {
-            return new User(name, pwd);
-        }
-
-        public static User Create(string phone,
-                                  string pwd,
-                                  string name = null,
-                                  int age = 0)
-        {
-            return new User(name, phone, pwd, age);
+            return new User(name, pwd, avatar, gender);
         }
     }
 }

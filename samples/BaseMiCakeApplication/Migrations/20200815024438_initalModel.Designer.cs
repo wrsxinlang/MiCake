@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaseMiCakeApplication.Migrations
 {
     [DbContext(typeof(BaseAppDbContext))]
-    [Migration("20200810141058_initalModel")]
+    [Migration("20200815024438_initalModel")]
     partial class initalModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,9 @@ namespace BaseMiCakeApplication.Migrations
 
                     b.Property<string>("Email")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ModificationTime")
                         .HasColumnType("datetime(6)");
@@ -131,23 +134,58 @@ namespace BaseMiCakeApplication.Migrations
                     b.ToTable("Checker");
                 });
 
+            modelBuilder.Entity("BaseMiCakeApplication.Infrastructure.StorageModels.CommentDatasSnapshotModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("CreateUserObjectID")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("ModificationTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid?>("ParentID")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("RelationObjectID")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("ReplayType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReplyContent")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<Guid?>("ReplyToUserObjectID")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Mlcy_Comments");
+                });
+
             modelBuilder.Entity("BaseMiCakeApplication.Infrastructure.StorageModels.NewIdeaSnapshotModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("ChecherAct")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
                     b.Property<string>("CheckedMsg")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<Guid>("CheckerID")
+                    b.Property<Guid?>("CheckerID")
                         .HasColumnType("char(36)");
-
-                    b.Property<string>("CheckerName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("CommentCount")
                         .HasColumnType("int");
@@ -266,9 +304,7 @@ namespace BaseMiCakeApplication.Migrations
                 {
                     b.HasOne("BaseMiCakeApplication.Domain.Aggregates.Idea.Checker", "Checker")
                         .WithMany()
-                        .HasForeignKey("CheckerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CheckerID");
 
                     b.HasOne("BaseMiCakeApplication.Domain.Aggregates.FileObject", "CoverImg")
                         .WithMany()

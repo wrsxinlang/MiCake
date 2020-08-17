@@ -18,4 +18,11 @@ namespace BaseMiCakeApplication.Controllers.Comman
     {
         创意回复 = 1
     }
+
+    public enum Gender
+    {
+        保密 = 0,
+        女 = 1,
+        男 = 2,
+    }
 }

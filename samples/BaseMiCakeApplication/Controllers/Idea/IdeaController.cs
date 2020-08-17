@@ -1,4 +1,5 @@
-﻿using BaseMiCakeApplication.Controllers.Comman;
+﻿using BaseMiCakeApplication.Comman;
+using BaseMiCakeApplication.Controllers.Comman;
 using BaseMiCakeApplication.Domain.Aggregates.Account;
 using BaseMiCakeApplication.Domain.Aggregates.Idea;
 using BaseMiCakeApplication.Domain.Repositories.NewIdeaBoundary;
@@ -118,6 +119,7 @@ namespace BaseMiCakeApplication.Controllers.Idea
         {
             var newIdea = _ideaRepositry.Find(id);
             if (newIdea == null) return new ResultModel(0, "数据不存在", null);
+            var createUser = _userRepositry.Find(newIdea.CreateUserID);
             var model = new
             {
                 Id = newIdea.Id,
@@ -125,7 +127,14 @@ namespace BaseMiCakeApplication.Controllers.Idea
                 Introduce = newIdea.Introduce,
                 ContentList = JsonConvert.DeserializeObject<List<IdeaItem>>(newIdea.Graphic),
                 Remark = newIdea.Remark,
-                useroid = newIdea.CreateUserID
+                CreateUser = new { 
+                    authorName = createUser.Name,
+                    createUser.Avatar,
+                    createUser.Gender,
+                    createUser.Id
+                },
+                createTime = Untils.GetTimeStamp(newIdea.CreationTime),
+
             };
             return new ResultModel(0, model);
         }

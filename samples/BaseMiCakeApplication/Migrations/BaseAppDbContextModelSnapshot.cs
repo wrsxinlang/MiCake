@@ -35,6 +35,9 @@ namespace BaseMiCakeApplication.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("ModificationTime")
                         .HasColumnType("datetime(6)");
 
@@ -127,6 +130,47 @@ namespace BaseMiCakeApplication.Migrations
                     b.HasKey("CheckerID");
 
                     b.ToTable("Checker");
+                });
+
+            modelBuilder.Entity("BaseMiCakeApplication.Infrastructure.StorageModels.CommentDatasSnapshotModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("CreateUserObjectID")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("ModificationTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid?>("ParentID")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("RelationObjectID")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("ReplayType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReplyContent")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<Guid?>("ReplyToUserObjectID")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Mlcy_Comments");
                 });
 
             modelBuilder.Entity("BaseMiCakeApplication.Infrastructure.StorageModels.NewIdeaSnapshotModel", b =>
