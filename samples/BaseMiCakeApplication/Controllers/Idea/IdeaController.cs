@@ -23,7 +23,7 @@ using System.Security.Cryptography.X509Certificates;
 namespace BaseMiCakeApplication.Controllers.Idea
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     [OpenApiTag("Idea 编辑创意", Description = "新增/编辑创意")]
     public class IdeaController : ControllerBase
     {

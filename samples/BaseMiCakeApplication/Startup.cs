@@ -52,12 +52,12 @@ namespace BaseMiCakeApplication
         {
             services.AddControllers();
 
-            services.AddCors(options => options.AddPolicy("AllowAny", p => p.WithOrigins("http://localhost:8080", "http://localhost:9528").AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
+            services.AddCors(options => options.AddPolicy("AllowAny", p => p.WithOrigins("http://localhost:8080", "https://mlcy.xyz").AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
 
             services.AddDbContext<BaseAppDbContext>(options =>
             {
-                options.UseMySql("Server=localhost;Database=micakeexample;User=root;Password=a12345;", mySqlOptions => mySqlOptions
-                    .ServerVersion(new ServerVersion(new Version(10, 5, 0), ServerType.MariaDb)));
+                options.UseMySql("Server=119.45.209.118;Database=micakeexample;User=root;Password=a12345;", mySqlOptions => mySqlOptions
+                    .ServerVersion(new ServerVersion(new Version(5, 5, 65), ServerType.MariaDb)));
             });
             //∆Û“µŒ¢–≈
             services.AddWork(Configuration);
@@ -130,13 +130,13 @@ namespace BaseMiCakeApplication
 
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images")),
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot/images")),
                 RequestPath = new PathString("/Upload")
             });
 
             app.UseDirectoryBrowser(new DirectoryBrowserOptions()
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images")),
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot/images")),
                 RequestPath = new PathString("/Upload")
             });
 

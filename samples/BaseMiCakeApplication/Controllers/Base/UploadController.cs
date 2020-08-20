@@ -16,7 +16,7 @@ using Microsoft.Net.Http.Headers;
 namespace BaseMiCakeApplication.Controllers.Base
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class UploadController : ControllerBase
     {
         public static string[] LimitPictureType = { ".PNG", ".JPG", ".JPEG", ".BMP", ".ICO" };

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace BaseMiCakeApplication.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class BookController : ControllerBase
     {
         private readonly IRepository<Book, Guid> _bookRepository;

@@ -11,8 +11,8 @@ namespace BaseMiCakeApplication.EFCore
         public BaseAppDbContext CreateDbContext(string[] args)
         {
             var builder = new DbContextOptionsBuilder<BaseAppDbContext>();
-            builder.UseMySql("Server=localhost;Database=micakeexample;User=root;Password=a12345;", mySqlOptions => mySqlOptions
-                    .ServerVersion(new ServerVersion(new Version(10, 5, 0), ServerType.MariaDb)));
+            builder.UseMySql("Server=119.45.209.118;Database=micakeexample;User=root;Password=a12345;", mySqlOptions => mySqlOptions
+                    .ServerVersion(new ServerVersion(new Version(5, 5, 65), ServerType.MariaDb)));
             return new BaseAppDbContext(builder.Options);
         }
     }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace BaseMiCakeApplication.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class ItineraryController : ControllerBase
     {
         private readonly IItineraryRepository _repository;

@@ -20,7 +20,7 @@ using MiCakeApp = BaseMiCakeApplication.Domain.Aggregates.Account;
 namespace BaseMiCakeApplication.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     [OpenApiTag("Login 身份认证", Description = "登录/注册 以及获取相关信息")]
     public class LoginController : ControllerBase
     {
@@ -63,6 +63,10 @@ namespace BaseMiCakeApplication.Controllers
             return new ResultModel(0, "", userRes);
         }
 
+        /// <summary>
+        /// 获取用户头像等信息
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public ResultModel GetCurrentInfo()
