@@ -52,11 +52,11 @@ namespace BaseMiCakeApplication
         {
             services.AddControllers();
 
-            services.AddCors(options => options.AddPolicy("AllowAny", p => p.WithOrigins("http://localhost:8080", "https://mlcy.xyz").AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
+            services.AddCors(options => options.AddPolicy("AllowAny", p => p.WithOrigins("http://localhost:8080", "https://mlcy.xyz", "http://119.45.209.118").AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
 
             services.AddDbContext<BaseAppDbContext>(options =>
             {
-                options.UseMySql("Server=119.45.209.118;Database=micakeexample;User=root;Password=a12345;", mySqlOptions => mySqlOptions
+                options.UseMySql("Server=localhost;Database=micakeexample;User=root;Password=a12345;", mySqlOptions => mySqlOptions
                     .ServerVersion(new ServerVersion(new Version(5, 5, 65), ServerType.MariaDb)));
             });
             //∆Û“µŒ¢–≈

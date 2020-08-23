@@ -100,6 +100,7 @@ namespace BaseMiCakeApplication.Controllers.Idea
                     userAvtar = tempUser.Avatar,
                     userName = tempUser.Name,
                     cyintroduce = item.Introduce,
+                    createTime = Untils.GetTimeStamp(item.CreationTime),
                     CommentCount = item.CommentCount,
                     ViewCount = item.ViewCount,
                     PublishCount = item.PublishCount,

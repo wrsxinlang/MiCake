@@ -76,8 +76,7 @@ namespace BaseMiCakeApplication.Controllers
 
 
             var user = _repository.Find(new Guid(userid));
-
-            return new ResultModel(0,"", user.Adapt<UserDto>());
+            return new ResultModel(0,"", new UserDto {Id = user.Id,Name=user.Name,Avatar=user.Avatar,Gender=user.Gender });
         }
 
         [HttpGet]
